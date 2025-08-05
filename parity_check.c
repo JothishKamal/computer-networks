@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void generate_2d_parity(char data[4][4], char parity[5][5]);
 int check_2d_parity(char received[5][5], int *err_row, int *err_col);
@@ -8,7 +9,6 @@ void print_2d_block(char block[5][5]);
 
 void generate_2d_parity(char data[4][4], char parity[5][5])
 {
-
   for (int i = 0; i < 4; i++)
   {
     for (int j = 0; j < 4; j++)
@@ -129,6 +129,9 @@ void parity_2d_demo()
 
   printf("\n--- Test Case 1: No error ---\n");
   memcpy(received, parity, sizeof(parity));
+  printf("Received matrix:\n");
+  print_2d_block(received);
+
   int err_row, err_col;
   int result = check_2d_parity(received, &err_row, &err_col);
   printf("Result: %s\n", (result == 0) ? "NO ERROR" : "ERROR DETECTED");
@@ -136,13 +139,18 @@ void parity_2d_demo()
   printf("\n--- Test Case 2: Single bit error ---\n");
   memcpy(received, parity, sizeof(parity));
   int r = rand() % 4, c = rand() % 4;
-  received[r][c] = (received[r][c] == '0') ? '1' : '0';
   printf("Error introduced at (%d,%d)\n", r, c);
+  received[r][c] = (received[r][c] == '0') ? '1' : '0';
+
+  printf("Received matrix with error:\n");
   print_2d_block(received);
+
   result = check_2d_parity(received, &err_row, &err_col);
   if (result == 1)
   {
     printf("Error detected and corrected at (%d,%d)\n", err_row, err_col);
+    printf("Corrected matrix:\n");
+    print_2d_block(received);
   }
 
   printf("\n--- Test Case 3: Two errors in same row ---\n");
@@ -153,36 +161,56 @@ void parity_2d_demo()
   {
     col2 = rand() % 4;
   } while (col2 == col1);
+
+  printf("Two errors in row %d at columns %d and %d\n", same_row, col1, col2);
   received[same_row][col1] = (received[same_row][col1] == '0') ? '1' : '0';
   received[same_row][col2] = (received[same_row][col2] == '0') ? '1' : '0';
-  printf("Two errors in row %d at columns %d and %d\n", same_row, col1, col2);
+
+  printf("Received matrix with errors:\n");
+  print_2d_block(received);
+
   result = check_2d_parity(received, &err_row, &err_col);
   printf("Result: %s\n", (result == 0) ? "ERRORS NOT DETECTED" : "ERRORS DETECTED");
 
   printf("\n--- Test Case 4: Three errors in different rows/columns ---\n");
   memcpy(received, parity, sizeof(parity));
+
+  printf("Introducing 3 random errors:\n");
   for (int i = 0; i < 3; i++)
   {
     int r = rand() % 4, c = rand() % 4;
+    printf("Error %d at (%d,%d)\n", i + 1, r, c);
     received[r][c] = (received[r][c] == '0') ? '1' : '0';
   }
+
+  printf("Received matrix with errors:\n");
+  print_2d_block(received);
+
   result = check_2d_parity(received, &err_row, &err_col);
   printf("Result: %s\n", (result > 0) ? "ERRORS DETECTED" : "ERRORS NOT DETECTED");
 
   printf("\n--- Test Case 5: Four errors in rectangle pattern ---\n");
   memcpy(received, parity, sizeof(parity));
 
+  printf("Four errors in rectangle pattern at (0,0), (0,1), (1,0), (1,1)\n");
+  printf("Original matrix:\n");
+  print_2d_block(received);
+
   received[0][0] = (received[0][0] == '0') ? '1' : '0';
   received[0][1] = (received[0][1] == '0') ? '1' : '0';
   received[1][0] = (received[1][0] == '0') ? '1' : '0';
   received[1][1] = (received[1][1] == '0') ? '1' : '0';
-  printf("Four errors in rectangle pattern at (0,0), (0,1), (1,0), (1,1)\n");
+
+  printf("Matrix with rectangle pattern errors:\n");
+  print_2d_block(received);
+
   result = check_2d_parity(received, &err_row, &err_col);
   printf("Result: %s\n", (result == 0) ? "ERRORS NOT DETECTED (Rectangle pattern limitation)" : "ERRORS DETECTED");
 }
 
 int main(void)
 {
+  srand(time(NULL));
   parity_2d_demo();
   return 0;
 }

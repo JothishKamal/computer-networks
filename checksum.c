@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 unsigned short calculate_checksum_binary(char *data);
 unsigned short calculate_checksum_octal(char *data);
@@ -94,6 +96,14 @@ void checksum_demo()
   unsigned short cs2 = calculate_checksum_octal(octal_data);
   printf("Calculated checksum: %04X\n", cs2);
 
+  char octal_error[20];
+  strcpy(octal_error, octal_data);
+  octal_error[3] = '7';
+  unsigned short cs2_err = calculate_checksum_octal(octal_error);
+  printf("Octal data with error: %s\n", octal_error);
+  printf("Checksum with error: %04X\n", cs2_err);
+  printf("Verification: %s\n", (cs2 == cs2_err) ? "PASSED" : "FAILED (Error detected)");
+
   printf("\n--- Test Case 3: 16 octets of hexadecimal data ---\n");
   char hex_data[] = "123456789ABCDEF0";
   printf("Hex data: %s\n", hex_data);
@@ -111,6 +121,7 @@ void checksum_demo()
 
 int main(void)
 {
+  srand(time(NULL));
   checksum_demo();
   return 0;
 }

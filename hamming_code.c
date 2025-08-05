@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void generate_hamming(char *data, char *codeword, int data_bits, int parity_type);
 int detect_correct_hamming(char *received, int total_bits, int parity_type);
@@ -192,6 +193,7 @@ void extract_data(char *codeword, char *data, int total_bits)
 }
 
 int main(void){
+  srand(time(NULL));
   hamming_demo();
   return 0;
 }
