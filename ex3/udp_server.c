@@ -10,10 +10,12 @@ int main()
   struct sockaddr_in serv_addr, cli_addr;
   socklen_t len;
   char buffer[1024];
+  
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = INADDR_ANY;
   serv_addr.sin_port = htons(9090);
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  
   bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   printf("UDP Server running on port 9090...\n");
 
@@ -28,7 +30,7 @@ int main()
     printf("Client: %s", buffer);
     sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&cli_addr, len);
   }
-  
+
   close(sockfd);
   return 0;
 }

@@ -13,8 +13,8 @@ int main()
 
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = INADDR_ANY;
   serv_addr.sin_port = htons(9090);
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
 
   bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   listen(sockfd, 5);
