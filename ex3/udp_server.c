@@ -16,6 +16,7 @@ int main()
   serv_addr.sin_port = htons(9090);
   bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   printf("UDP Server running on port 9090...\n");
+
   while (1)
   {
     memset(buffer, 0, sizeof(buffer));
@@ -27,6 +28,7 @@ int main()
     printf("Client: %s", buffer);
     sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&cli_addr, len);
   }
+  
   close(sockfd);
   return 0;
 }

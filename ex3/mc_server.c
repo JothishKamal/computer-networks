@@ -6,19 +6,23 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <pthread.h>
+
 #define PORT 10000
 #define MAX_CLIENTS 100
 #define BUFFER_SIZE 2048
 #define USERNAME_LEN 50
+
 int client_sockets[MAX_CLIENTS];
 char usernames[MAX_CLIENTS][USERNAME_LEN];
 pthread_mutex_t clients_mutex =
     PTHREAD_MUTEX_INITIALIZER;
+
 typedef struct
 {
   int sock;
   int idx;
 } client_t;
+
 void broadcast_all(const char *msg, int msglen)
 {
   pthread_mutex_lock(&clients_mutex);
@@ -37,6 +41,7 @@ void broadcast_all(const char *msg, int msglen)
   }
   pthread_mutex_unlock(&clients_mutex);
 }
+
 void *handle_client(void *arg)
 {
   client_t *c = (client_t *)arg;
@@ -84,22 +89,24 @@ void *handle_client(void *arg)
   close(sock);
   return NULL;
 }
+
 int main()
 {
   for (int i = 0; i < MAX_CLIENTS; i++)
     client_sockets[i] = -1;
+
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
   int opt = 1;
-  setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt,
-             sizeof(opt));
+  setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
   struct sockaddr_in server_addr;
   server_addr.sin_family = AF_INET;
   server_addr.sin_addr.s_addr = INADDR_ANY;
   server_addr.sin_port = htons(PORT);
-  bind(server_fd, (struct sockaddr *)&server_addr,
-       sizeof(server_addr));
+  bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
   listen(server_fd, 10);
   printf("Chat server started on port %d\n", PORT);
+
   while (1)
   {
     struct sockaddr_in client_addr;
@@ -108,6 +115,7 @@ int main()
     if (new_sock < 0)
       continue;
     pthread_mutex_lock(&clients_mutex);
+    
     int found = -1;
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
@@ -119,7 +127,9 @@ int main()
         break;
       }
     }
+    
     pthread_mutex_unlock(&clients_mutex);
+    
     if (found == -1)
     {
       const char *full = "Server full. Try later.\n";
@@ -127,6 +137,7 @@ int main()
       close(new_sock);
       continue;
     }
+    
     client_t *c = malloc(sizeof(client_t));
     c->sock = new_sock;
     c->idx = found;
@@ -134,6 +145,7 @@ int main()
     pthread_create(&tid, NULL, handle_client, c);
     pthread_detach(tid);
   }
+  
   close(server_fd);
   return 0;
 }

@@ -5,10 +5,13 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+
 #define PORT 10000
 #define BUFFER_SIZE 2048
 #define USERNAME_LEN 50
+
 int client_sock;
+
 void *recv_thread_fn(void *arg)
 {
   char buffer[BUFFER_SIZE];
@@ -27,6 +30,7 @@ void *recv_thread_fn(void *arg)
   }
   return NULL;
 }
+
 int main(int argc, char **argv)
 {
   const char *server_ip = "127.0.0.1";
