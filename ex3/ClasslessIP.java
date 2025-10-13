@@ -53,12 +53,11 @@ public class ClasslessIP {
     long broadcast = network | (~mask & 0xFFFFFFFFL);
 
     long totalHosts;
-    if (prefix == 32)
-      totalHosts = 1;
-    else if (prefix == 31)
-      totalHosts = 2;
-    else
-      totalHosts = 1L << (32 - prefix);
+    totalHosts = switch (prefix) {
+      case 32 -> 1;
+      case 31 -> 2;
+      default -> 1L << (32 - prefix);
+    };
 
     System.out.println("\nCIDR Address: " + cidr);
     System.out.println("Prefix length: " + prefix);
@@ -66,17 +65,21 @@ public class ClasslessIP {
     System.out.println("Network Address: " + longToIp(network));
     System.out.println("Broadcast Address: " + longToIp(broadcast));
 
-    if (prefix == 32) {
-      System.out.println("Total Hosts: 1");
-      System.out.println("Host Address: " + longToIp(network));
-    } else if (prefix == 31) {
-      System.out.println("Total Hosts: 2");
-      System.out.println("Host 1: " + longToIp(network));
-      System.out.println("Host 2: " + longToIp(broadcast));
-    } else {
-      System.out.println("Total Hosts: " + (totalHosts - 2));
-      System.out.println("First Host: " + longToIp(network + 1));
-      System.out.println("Last Host: " + longToIp(broadcast - 1));
+    switch (prefix) {
+      case 32 -> {
+        System.out.println("Total Hosts: 1");
+        System.out.println("Host Address: " + longToIp(network));
+      }
+      case 31 -> {
+        System.out.println("Total Hosts: 2");
+        System.out.println("Host 1: " + longToIp(network));
+        System.out.println("Host 2: " + longToIp(broadcast));
+      }
+      default -> {
+        System.out.println("Total Hosts: " + (totalHosts - 2));
+        System.out.println("First Host: " + longToIp(network + 1));
+        System.out.println("Last Host: " + longToIp(broadcast - 1));
+      }
     }
   }
 }
