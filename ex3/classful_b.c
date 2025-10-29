@@ -15,13 +15,11 @@ uint32_t ip_to_uint(const char *s)
     printf("Invalid IP octet\n");
     exit(1);
   }
-  return ((uint32_t)a << 24) | ((uint32_t)b << 16) | ((uint32_t)c << 8) |
-         (uint32_t)d;
+  return ((uint32_t)a << 24) | ((uint32_t)b << 16) | ((uint32_t)c << 8) | (uint32_t)d;
 }
 void uint_to_ip(uint32_t ip, char *buf)
 {
-  sprintf(buf, "%u.%u.%u.%u", (ip >> 24) & 0xff, (ip >> 16) & 0xff,
-          (ip >> 8) & 0xff, ip & 0xff);
+  sprintf(buf, "%u.%u.%u.%u", (ip >> 24) & 0xff, (ip >> 16) & 0xff, (ip >> 8) & 0xff, ip & 0xff);
 }
 int main()
 {
@@ -129,8 +127,7 @@ int main()
     uint_to_ip(broadcast, brodbuf);
     uint_to_ip(first, firstbuf);
     uint_to_ip(last, lastbuf);
-    printf("| %-5u | %-18s | %-18s | %-16s | %-16s | %-10u |\n", i + 1,
-           netbuf, brodbuf, firstbuf, lastbuf, usable);
+    printf("| %-5u | %-18s | %-18s | %-16s | %-16s | %-10u |\n", i + 1, netbuf, brodbuf, firstbuf, lastbuf, usable);
   }
   printf("----------------------------------------------------------------------------------------------------------------------\n");
   printf("\nNOTE: This program used classful addressing rules (default mask based on IP class)\n");

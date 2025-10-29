@@ -68,19 +68,12 @@ int main()
   unsigned long long usable_hosts = total_addresses > 2 ? total_addresses - 2 : 0;
   printf("\nIP Address: %u.%u.%u.%u\n", a, b, c, d);
   printf("Class: %c\n", cls);
-  printf("Default Mask: %u.%u.%u.%u\n",
-         (mask >> 24) & 0xFF, (mask >> 16) & 0xFF, (mask >> 8) & 0xFF, mask & 0xFF);
+  printf("Default Mask: %u.%u.%u.%u\n", (mask >> 24) & 0xFF, (mask >> 16) & 0xFF, (mask >> 8) & 0xFF, mask & 0xFF);
   printf("Size of Network (total addresses): %llu\n", total_addresses);
   printf("Number of usable hosts: %llu\n", usable_hosts);
-  printf("Network Address: %u.%u.%u.%u\n",
-         (network >> 24) & 0xFF, (network >> 16) & 0xFF, (network >> 8) & 0xFF, network & 0xFF);
-  printf("Broadcast Address: %u.%u.%u.%u\n",
-         (broadcast >> 24) & 0xFF, (broadcast >> 16) & 0xFF,
-         (broadcast >> 8) & 0xFF, broadcast & 0xFF);
-  printf("First Host: %u.%u.%u.%u\n",
-         (first >> 24) & 0xFF, (first >> 16) & 0xFF, (first >> 8) & 0xFF, first & 0xFF);
-  printf("Last Host: %u.%u.%u.%u\n",
-         (last >> 24) & 0xFF, (last >> 16) & 0xFF, (last >> 8) & 0xFF,
-         last & 0xFF);
+  printf("Network Address: %u.%u.%u.%u\n", (network >> 24) & 0xFF, (network >> 16) & 0xFF, (network >> 8) & 0xFF, network & 0xFF);
+  printf("Broadcast Address: %u.%u.%u.%u\n", (broadcast >> 24) & 0xFF, (broadcast >> 16) & 0xFF, (broadcast >> 8) & 0xFF, broadcast & 0xFF);
+  printf("First Host: %u.%u.%u.%u\n", (first >> 24) & 0xFF, (first >> 16) & 0xFF, (first >> 8) & 0xFF, first & 0xFF);
+  printf("Last Host: %u.%u.%u.%u\n", (last >> 24) & 0xFF, (last >> 16) & 0xFF, (last >> 8) & 0xFF, last & 0xFF);
   return 0;
 }

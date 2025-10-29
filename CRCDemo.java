@@ -1,7 +1,6 @@
 import java.util.Random;
 
 public class CRCDemo {
-
     public static void main(String[] args) {
         new CRCDemo().runDemo();
     }

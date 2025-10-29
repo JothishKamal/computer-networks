@@ -6,7 +6,6 @@ import java.util.concurrent.*;
 public class ChatServer {
   private static final int PORT = 10000;
   private static final int MAX_CLIENTS = 100;
-
   private static final Set<ClientHandler> clients = ConcurrentHashMap.newKeySet();
 
   public static void main(String[] args) {
