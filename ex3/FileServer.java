@@ -12,11 +12,11 @@ public class FileServer {
             System.out.println("Server started on port " + PORT);
 
             while (true) {
-                try (Socket clientSocket = serverSocket.accept()) {
-                    System.out.println("Client connected: " + clientSocket.getInetAddress());
+                try (Socket socket = serverSocket.accept()) {
+                    System.out.println("Client connected: " + socket.getInetAddress());
 
-                    DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
-                    DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+                    DataInputStream dis = new DataInputStream(socket.getInputStream());
+                    DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
                     byte[] filenameBuffer = new byte[BUFFER_SIZE];
                     int bytesRead = dis.read(filenameBuffer);
